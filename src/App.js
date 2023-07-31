@@ -1,49 +1,60 @@
 import "./styles.css";
 import { useState } from "react";
-export default function App() {
-  const [tasks, setTasks] = useState([{}]);
-  const [value, setValues] = useState("");
-
-  function addItem(e) {
+export default function App3() {
+  const [option, setOption] = useState();
+  //  value is the current amount we are deopsit or withdraw
+  const [value, setValue] = useState();
+  // Amount is the account balance
+  const [amount, setAmount] = useState(0);
+  function main(e) {
+    // e.preventDefault which prevents the event that is ocuur.
     e.preventDefault();
-    if (!value) return;
-    const newTask = [...tasks, { text: `${value}` }];
-    setTasks(newTask);
-    setValues("");
-  }
-  function removeItem(e, id) {
-    e.preventDefault();
-    let temp = [...tasks];
-    temp.splice(id, 1);
-    setTasks(temp);
+    if (!option) alert("Please select Deposit or Withdraw");
+    else if (option === "Deposit") {
+      setAmount(Number(value) + amount);
+      console.log(amount);
+    } else {
+      const temp = amount - Number(value);
+      if (temp < 0) {
+        alert("Insufficient Balance");
+      } else {
+        setAmount(temp);
+      }
+    }
+    setValue("");
   }
 
   return (
-    <>
-      <div className="name">
-        <h1>TO - DO LIST</h1>
-      </div>
-      <div>
-        <form className="form" onSubmit={addItem}>
-          <input
-            type="text"
-            className="input"
-            placeholder="Add"
-            value={value}
-            onChange={(e) => setValues(e.target.value)}
-          />
-          <button className="btn_submit">Submit</button>
-        </form>
-
-        {tasks.map((item, id) => (
-          <div className="task" key={id} id={id}>
-            {item.text}
-            <button className="btn_remove" onClick={(e) => removeItem(e, id)}>
-              X
-            </button>
-          </div>
-        ))}
-      </div>
-    </>
+    <div className="First">
+      <h1 className="head">AUTOMATED TELLER MACHINE </h1>
+      <form onSubmit={main}>
+        <br></br>
+        <div>
+          <label className="label">
+            Please Choose Your Transaction
+            <br></br>
+            <select onChange={(e) => setOption(e.target.value)}>
+              <option />
+              <option> Deposit </option>
+              <option> Withdraw </option>
+            </select>
+            <br></br>
+            <br></br>
+            <h2> Your Balance is Rs.{amount}</h2>
+            Enter the amount
+          </label>
+        </div>
+        <br></br>
+        <input
+          type="Number"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <div>
+          <br></br>
+          <button className="ok"> SUBMIT </button>
+        </div>
+      </form>
+    </div>
   );
 }
